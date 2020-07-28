@@ -9,24 +9,31 @@ import SignUp from "./components/signup.component";
 
 function App() {
   let loggedInStatus = false;
-  if (sessionStorage.getItem("accessToken")) {
+  let user = undefined;
+  let accessToken = undefined;
+  if (sessionStorage.getItem("expireAt") && (sessionStorage.getItem("expireAt") - Date.now()) > 0) {
     loggedInStatus = true;
+    user = sessionStorage.getItem("user");
+    accessToken = sessionStorage.getItem("accessToken");
   }
-  let [session, setSession] = useState({
-    user: undefined,
-    accessToken: undefined,
+  
+  const [session, setSession] = useState({
+    user: user,
+    accessToken: accessToken,
     loggedIn: loggedInStatus
   });
-  const loginSuccess = function (accessToken, user) {
-    setSession({ accessToken: accessToken, loggedIn: true, user: user });
+
+  const loginSuccess = function (accessToken, expireAt, user) {
     sessionStorage.setItem("accessToken", accessToken);
+    sessionStorage.setItem("expireAt", expireAt);
     sessionStorage.setItem("user", user);
+    setSession({ accessToken: accessToken, loggedIn: true, user: user, expireAt: expireAt });
   }
 
-  const logout = function () {
+  const logout = function (e) {
+    e.preventDefault();
     setSession({ accessToken: undefined, loggedIn: false });
-    sessionStorage.removeItem("accessToken");
-    sessionStorage.removeItem("user");
+    sessionStorage.setItem("expireAt", 0);
   }
 
   return (<Router>
@@ -38,7 +45,7 @@ function App() {
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
                 { session.loggedIn ?
-                  <Link className="nav-link" onClick={logout}>SignOut</Link>
+                  <Link className="nav-link" onClick={logout} to={"/sign-in"}>SignOut</Link>
                   :
                   <Link className="nav-link" to={"/sign-up"}>Register</Link>
                 }
@@ -53,9 +60,6 @@ function App() {
           <Switch>
             <Route exact path='/' render={function (props) {
               return session.loggedIn ? <Home {...props}/> : <Login {...props} loginSuccess={loginSuccess} />
-            }} />
-            <Route exact path='/sign-in' render={function (props) {
-              return session.loggedIn ? <Home {...props} /> : <Login {...props} loginSuccess={loginSuccess} />
             }} />
             <Route exact path='/sign-up' render={function (props) {
               return session.loggedIn ? <Home {...props} /> : <SignUp {...props} loginSuccess={loginSuccess} />

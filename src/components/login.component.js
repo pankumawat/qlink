@@ -31,10 +31,10 @@ export default class Login extends Component {
                 response => {
                     response.json().then(body => {
                         if (response.ok) {
-                            this.loginSuccess(body.accessToken, JSON.stringify(body.user))
+                            this.loginSuccess(body.accessToken, body.expireAt, JSON.stringify(body.user))
                         }
                         else
-                            console.log(body);
+                            console.error(body);
                     })
 
                 },
