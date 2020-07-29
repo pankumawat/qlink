@@ -6,7 +6,7 @@
         "LOGIN": "/login",
         "REGISTER": "/register",
         "SHORT": "/short",
-        "LINKS": "/link"
+        "LINKS": "/links"
     }
 
 }
