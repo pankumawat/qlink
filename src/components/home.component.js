@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import UserLinks from "./userlinks.component";
+import CreateLink from "./createlink.component";
 
 export default class Home extends Component {
     constructor(props) {
@@ -19,7 +20,8 @@ export default class Home extends Component {
         return (
             <>
                 <h2>Welcome {this.user.fname}</h2>
-                <br/>
+                <CreateLink />
+                <br />
                 <h3>User Links</h3>
                 <UserLinks />
             </>

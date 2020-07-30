@@ -5,8 +5,7 @@
     "API_URL" :{
         "LOGIN": "/login",
         "REGISTER": "/register",
-        "SHORT": "/short",
+        "CREATE_LINK": "/createlink",
         "LINKS": "/links"
     }
-
 }

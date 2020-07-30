@@ -12,7 +12,6 @@ export default class Login extends Component {
     }
 
     //setState
-
     usernameRef = createRef();
     passwordRef = createRef();
     //remembermeRef = createRef();

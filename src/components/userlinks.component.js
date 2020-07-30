@@ -57,10 +57,10 @@ export default class UserLinks extends Component {
                         {   this.state.links &&
                             Object.keys(this.state.links).map((value, index) => {
                                 const obj = this.state.links[value];
-                                return <tr>
-                                    <td>{`${config.API_BASE_URL}/0/${obj.shortName}`}</td>
-                                    <td>{obj.hits}</td>
-                                    <td><a href="{obj.url}" taget="_blank">Link</a></td>
+                                return <tr key={`TR_${index}`}>
+                                    <td key={`TD1_${index}`}>{`${config.API_BASE_URL}/0/${obj.shortName}`}</td>
+                                    <td key={`TD2_${index}`}>{obj.hits}</td>
+                                    <td key={`TD3_${index}`}><a href={obj.url} taget="_blank">Link</a></td>
                                 </tr>
                             })
                         }
