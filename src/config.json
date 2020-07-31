@@ -1,6 +1,6 @@
 {
     "BASE_URL" : "http://localhost:3000",
-    "API_BASE_URL": "http://localhost:3001",
+    "API_BASE_URL": "http://links.in",
 
     "API_URL" :{
         "LOGIN": "/login",

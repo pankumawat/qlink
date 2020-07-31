@@ -22,7 +22,6 @@ export default class Home extends Component {
                 <h2>Welcome {this.user.fname}</h2>
                 <CreateLink />
                 <br />
-                <h3>User Links</h3>
                 <UserLinks />
             </>
         );

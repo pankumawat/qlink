@@ -1,5 +1,5 @@
 import React, { Component, createRef } from "react";
-import { getAccessToken, getLoggedInUser } from '../core'
+import { getAccessToken, getLoggedInUser, toasty as toast, globalFunction } from '../core'
 const config = require("../config.json");
 
 export default class CreateLink extends Component {
@@ -7,7 +7,7 @@ export default class CreateLink extends Component {
         super(props);
         this.user = getLoggedInUser();
         this.accessToken = getAccessToken();
-        this.state = {};
+        this.customLinksAllowed = (this.user.flags.customLinks === undefined && this.user.flags.customLinks === false);
         this.sentCreateLinkRequest = this.sentCreateLinkRequest.bind(this);
     }
 
@@ -32,19 +32,17 @@ export default class CreateLink extends Component {
                         if (response.ok) {
                             this.shortName.current.value = "";
                             this.longUrl.current.value = "";
-                            //this.setState({ currentTime: Date.now()});
+                            globalFunction.onDemandFetch && globalFunction.onDemandFetch();
                         }
                         else
-                            console.error(body);
+                            toast().error(body.error || body);
                     })
-
                 },
                 error => {
-                    console.dir(error);
-                    console.log(error);
+                    toast().error(error.error || error);
                 })
             .catch(err => {
-                console.log(err);
+                toast().error(err.error || err);
             });
     }
 
@@ -54,7 +52,7 @@ export default class CreateLink extends Component {
             <h3>Create Short Url</h3>
         
             <div className="form-group">
-                    <input type="text" ref={this.shortName} className="form-control" placeholder="Enter Short Name" />
+                    <input type="text" ref={this.shortName} className="form-control" placeholder={this.customLinksAllowed ? 'Enter Short Name' : ' Custom short names are only allowed to premium users.'} disabled={!this.customLinksAllowed}/>
                     <br/>
                     <input type="url" ref={this.longUrl} className="form-control" placeholder="Enter URL"/>
                     <br />

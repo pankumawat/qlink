@@ -1,6 +1,6 @@
 import React, { Component, createRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { setLoginParams } from '../core'
+import { setLoginParams, toasty as toast } from '../core'
 const config = require("../config.json");
 
 export default class Login extends Component {
@@ -35,17 +35,21 @@ export default class Login extends Component {
                             setLoginParams(body.accessToken, body.expireAt, JSON.stringify(body.user))
                             this.loginSuccess();
                         }
-                        else
-                            console.error(body);
+                        else {
+                            toast().error(body.error);
+                        }
                     })
 
                 },
                 error => {
-                    console.dir(error);
+                    console.log("ABCC");
                     console.log(error);
+                    toast().error(error);
                 })
             .catch(err => {
+                console.log("ABCC ERR");
                 console.log(err);
+                toast().error(err);
             });
     }
     

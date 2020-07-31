@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 export const getSignedUserObject = function () {
     if (isLoggedIn()) {
         return {
@@ -40,3 +42,28 @@ export const unsetLoginParams = function (accessToken, expireAt, user) {
     sessionStorage.removeItem("expireAt");
     sessionStorage.removeItem("user");
 }
+
+const toastObj = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+}
+
+export const toasty = function() {
+    return {
+        warn: (text) => toast.warn(text, toastObj),
+        info: (text) => toast.info(text, toastObj),
+        success: (text) => toast.success(text, toastObj),
+        error: (text) => toast.error(text, toastObj)
+    }
+}
+
+const shareFunctions = {
+
+}
+
+export const globalFunction = () => shareFunctions;

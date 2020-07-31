@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getAccessToken, getLoggedInUser } from '../core'
+import { getAccessToken, getLoggedInUser, toasty as toast, globalFunction} from '../core'
 import { Table } from 'react-bootstrap';
 const config = require("../config.json");
 
@@ -10,11 +10,16 @@ export default class UserLinks extends Component {
         this.accessToken = getAccessToken();
         this.state = {};
         this.updateState = this.updateState.bind(this);
+        this.onDemandFetch = this.onDemandFetch.bind(this);
         setTimeout(this.updateState, 100);
     }
 
     updateState = function () {
-        setTimeout(this.updateState, 5000);
+        this.onDemandFetch();
+        globalFunction.onDemandFetch = this.onDemandFetch;
+    }
+
+    onDemandFetch = function () {
         fetch(`${config.API_BASE_URL}${config.API_URL.LINKS}`, {
             method: "GET",
             headers: {
@@ -26,19 +31,18 @@ export default class UserLinks extends Component {
                 response => {
                     response.json().then(body => {
                         if (response.ok) {
-                            this.setState({ currentTime: Date.now(), links: body.data.links});
+                            this.setState({ currentTime: Date.now(), links: body.data.links });
                         }
                         else
-                            console.error(body);
+                            toast().error(body.error);
                     })
 
                 },
                 error => {
-                    console.dir(error);
-                    console.log(error);
+                    toast().error(error.error);
                 })
             .catch(err => {
-                console.log(err);
+                toast().error(err.error);
             });
     }
 
