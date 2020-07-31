@@ -1,5 +1,5 @@
 {
-    "API_BASE_URL": "http://links.in",
+    "API_BASE_URL": "http://qlinks.in",
 
     "API_URL" :{
         "LOGIN": "/login",
