@@ -42,13 +42,9 @@ export default class Login extends Component {
 
                 },
                 error => {
-                    console.log("ABCC");
-                    console.log(error);
                     toast().error(error);
                 })
             .catch(err => {
-                console.log("ABCC ERR");
-                console.log(err);
                 toast().error(err);
             });
     }
