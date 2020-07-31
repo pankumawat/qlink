@@ -7,7 +7,7 @@ export default class CreateLink extends Component {
         super(props);
         this.user = getLoggedInUser();
         this.accessToken = getAccessToken();
-        this.customLinksAllowed = (this.user.flags.customLinks === undefined && this.user.flags.customLinks === false);
+        this.customLinksAllowed = (this.user.flags.customLinks !== undefined && this.user.flags.customLinks === true);
         this.sentCreateLinkRequest = this.sentCreateLinkRequest.bind(this);
     }
 
