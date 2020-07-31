@@ -9,7 +9,7 @@ import { Dropdown } from 'react-bootstrap';
 import Home from "./components/home.component";
 import Login from "./components/login.component";
 import SignUp from "./components/signup.component";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
