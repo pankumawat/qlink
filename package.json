@@ -1,0 +1,19 @@
+{
+  "name": "qlinks",
+  "version": "1.0.0",
+  "description": "One of those url shortners",
+  "main": "index.js",
+  "author": "Pankaj Kumawat",
+  "license": "ISC",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint src/js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.10.0"
+  }
+}
