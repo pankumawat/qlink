@@ -3,7 +3,7 @@ const app = express();
 
 const port = process.env.PORT || 8080;
 app.get('/', (req, res) => {
-  res.send('I am just getting started..')
+  res.send('Still working on login page..')
 });
 
 app.listen(port, () => {
