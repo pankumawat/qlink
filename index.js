@@ -13,6 +13,7 @@ const getErrorResponse = core.getErrorResponse;
 const generateGuestShortIds = core.generateGuestShortIds;
 const generateShortIds = core.generateShortIds;
 const getJwtToken = core.getJwtToken;
+const parseUserAgent = core.parseUserAgent;
 
 app.use(express.static('public'))
 
@@ -20,7 +21,12 @@ app.get('/', (req, res) => {
   return res.redirect(301, '/login.html');
 });
 
-// Redirect
+app.get('/p', (req, res) => {
+  return res.send(JSON.stringify(parseUserAgent(req)));
+});
+
+
+//Redirect
 //res.redirect('/foo/bar')
 //res.redirect('../login')
 

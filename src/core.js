@@ -1,4 +1,5 @@
 const token_master = require('./utils/token-master');
+const user_agent_parser = require('ua-parser-js');
 
 function getResponse(obj, success, error) {
     const respObj = {
@@ -48,6 +49,34 @@ function generateId(length) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
+}
+
+// Get Client IP
+
+function getClientIp(req) {
+    let ip = '';
+    if (req.headers['x-forwarded-for']) {
+        ip = req.headers['x-forwarded-for'];
+    } else if (req.connection && req.connection.remoteAddress) {
+        ip = req.connection.remoteAddress;
+    } else {
+        ip = req.ip;
+    }
+    return ip.split(",")[0];
+}
+
+// Parse User Agent
+
+exports.parseUserAgent = function (req) {
+    const parsedObj = user_agent_parser(req.headers['user-agent']);
+    parsedObj['client_ip'] = getClientIp(req);
+    return {
+        ip: parsedObj.client_ip,
+        browser: parsedObj.browser.name,
+        browser_v: parsedObj.browser.version,
+        os: parsedObj.os.name,
+        os_v: parsedObj.os.version
+    }
 }
 
 // Random Ids
