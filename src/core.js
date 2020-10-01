@@ -16,6 +16,7 @@ function getResponse(obj, success, error) {
 
     return respObj;
 }
+
 exports.getSuccessResponse = function (obj) {
     return getResponse(obj, true);
 }
@@ -34,4 +35,28 @@ exports.verifyToken = function (req, res, next) {
 
 exports.getJwtToken = function (user, expiry) {
     return token_master.getJwtToken(user, expiry);
+}
+
+// Random Ids
+const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+const charactersLength = characters.length;
+
+function generateId(length) {
+    length = length ? length : 1;
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
+// Random Ids
+exports.generateGuestShortIds = function (len) {
+    const sanitizedLength = (len && Number.isInteger(parseInt(len)) && len >= 5) ? (len > 100 ? 100 : len) : 5;
+    return generateId(sanitizedLength);
+}
+
+// Random Ids
+exports.generateShortIds = function () {
+    return generateId(3);
 }

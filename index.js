@@ -9,12 +9,29 @@ const core = require('./src/core');
 // Functions
 const getSuccessResponse = core.getSuccessResponse;
 const getErrorResponse = core.getErrorResponse;
+
+const generateGuestShortIds = core.generateGuestShortIds;
+const generateShortIds = core.generateShortIds;
 const getJwtToken = core.getJwtToken;
 
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
   return res.redirect(301, '/login.html');
+});
+
+// Redirect
+//res.redirect('/foo/bar')
+//res.redirect('../login')
+
+app.get('/@:short_name', (req, res) => {
+  let short_name = req.params['short_name'];
+  res.redirect(`https://www.google.com/search?q=${short_name}`);
+});
+
+app.get('/unique-ids/:len', (req, res) => {
+  let len = req.params['len'];
+  res.send(generateGuestShortIds(len));
 });
 
 app.post('/login', (req, res) => {

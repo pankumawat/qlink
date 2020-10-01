@@ -2,6 +2,10 @@
 (function ($) {
     "use strict";
 
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
     /*==================================================================
     [ Validate ]*/
     const input = $('.validate-input .input100');
