@@ -2,22 +2,20 @@
 (function ($) {
     "use strict";
 
-
     /*==================================================================
     [ Validate ]*/
-    var input = $('.validate-input .input100');
+    const input = $('.validate-input .input100');
 
-    $('.validate-form').on('submit',function(){
-        var check = true;
-
-        for(var i=0; i<input.length; i++) {
+    $('.validate-form').on('submit',function(e){
+        e.preventDefault();
+        let check = true;
+        for(let i=0; i<input.length; i++) {
             if(validate(input[i]) == false){
                 showValidate(input[i]);
                 check=false;
             }
         }
-
-        return check;
+        //return check;
     });
 
 
@@ -41,20 +39,18 @@
     }
 
     function showValidate(input) {
-        var thisAlert = $(input).parent();
-
+        const thisAlert = $(input).parent();
         $(thisAlert).addClass('alert-validate');
     }
 
     function hideValidate(input) {
-        var thisAlert = $(input).parent();
-
+        const thisAlert = $(input).parent();
         $(thisAlert).removeClass('alert-validate');
     }
     
     /*==================================================================
     [ Show pass ]*/
-    var showPass = 0;
+    let showPass = 0;
     $('.btn-show-pass').on('click', function(){
         if(showPass == 0) {
             $(this).next('input').attr('type','text');
@@ -68,8 +64,6 @@
             $(this).find('i').addClass('fa-eye');
             showPass = 0;
         }
-        
     });
-    
 
 })(jQuery);
