@@ -14,7 +14,7 @@ const getJwtToken = core.getJwtToken;
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  return res.redirect(301, '/login/login.html');
+  return res.redirect(301, '/login.html');
 });
 
 app.post('/login', (req, res) => {
