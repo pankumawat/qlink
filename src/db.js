@@ -1,12 +1,4 @@
-const mysql = require('mysql');
-/*
-const connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'qlinks',
-    password : 'sknils',
-    database : 'qlinks'
-});
-*/
+/* const mysql = require('mysql');
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
@@ -16,7 +8,6 @@ const pool = mysql.createPool({
     database: 'qlinks'
 });
 
-// this one is sufficient..
 pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     if (error) throw error;
     console.log('The solution is: ', results[0].solution);
@@ -84,15 +75,10 @@ function deleteRow(userName) {
     });
 }
 
-/*
-connection.connect((err) => {
-    if(err) throw err;
-    console.log('Connected to MySQL Server!');
-});
-
-connection.query('SELECT * from users LIMIT 1', (err, rows) => {
-    if(err) throw err;
-    console.log('The data from users table are: \n', rows);
-    connection.end();
-});
- */
+*/
+exports.fetchUser = (username) => {
+    return new Promise((resolve, reject) => {
+        resolve({"username": "pankaj", "password": "pass123"})
+    })
+}
+// this one is sufficient..

@@ -2,12 +2,12 @@
   "name": "qlinks",
   "version": "1.0.0",
   "description": "One of those url shortners",
-  "main": "index.js",
+  "main": "app.js",
   "author": "Pankaj Kumawat",
   "license": "ISC",
   "scripts": {
-    "nstart": "nodemon index.js",
-    "start": "node index.js",
+    "nstart": "nodemon app.js",
+    "start": "node app.js",
     "lint": "eslint src/js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,6 +17,7 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
+    "react-router-dom": "^5.2.0",
     "ua-parser-js": "^0.7.22"
   },
   "devDependencies": {
