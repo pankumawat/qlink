@@ -17,7 +17,6 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
-    "react-router-dom": "^5.2.0",
     "ua-parser-js": "^0.7.22"
   },
   "devDependencies": {

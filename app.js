@@ -21,6 +21,19 @@ app.get('/@:short_name', (req, res) => {
 
 app.use('/api', apiRoute);
 
+app.get(['/', '/login', '/home', '/logout', '/fe/*'], (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/index.html'));
+});
+
+app.use((req, res) => {
+    const queryObj = req.query;
+    let queryString = '';
+    Object.keys(queryObj).forEach(key => {
+        queryString = `${queryString}${queryString.length === 0 ? '?' : '&' }${key}=${queryObj[key]}`
+    })
+    res.redirect('/');
+});
+
 /******************************/
 app.listen(port, () => {
     console.log(`qlinks running on ${port}!`)
