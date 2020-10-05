@@ -37,6 +37,7 @@
             let user = localStorage.getItem("user");
             user = user && JSON.parse(localStorage.getItem("user"));
             if (user) {
+                // Check if remaining session is at-least 5 seconds in future else consider non logged in.
                 if ((new Date(user.expireAt) - new Date()) > 5000) {
                     return user;
                 } else {
@@ -62,14 +63,14 @@
 
         render = () => {
             if (!this.state.loggedInUser) {
-                silentUrlChangeTo("/login")
+                silentUrlChangeTo(VALID_PATHS.LOGIN);
                 return (
                     <div className="app box center">
                         <Login loginSuccess={this.loginSuccess}/>
                     </div>
                 )
             } else {
-                silentUrlChangeTo("/home")
+                silentUrlChangeTo(VALID_PATHS.HOME);
                 return (
                     <div className="app center">
                         <Home logout={this.logout}/>
@@ -81,7 +82,7 @@
     }
 
     ReactDOM.render(<App/>, document.getElementById('root'));
-
+    fillLogo();
 </script>
 
 
