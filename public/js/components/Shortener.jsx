@@ -57,7 +57,7 @@ class Shortener extends React.Component {
                         <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                             <div className="input-group">
                                 <input type="text" className="form-control" name="short_name"
-                                       placeholder="Short-Name"
+                                       placeholder={`Custom short name ${this.props.loggedInUser.isGuest ? ' (Current user is not eligible)' : ''}`}
                                        required="required" disabled={this.props.loggedInUser.isGuest ? true : false}/>
                             </div>
                         </div>
