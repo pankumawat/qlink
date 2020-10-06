@@ -60,22 +60,43 @@ apiRoute.post('/short', (req, res) => {
     let short_name = req.body.short_name;
     const long_url = req.body.long_url;
     const isGuest = req.body.guest;
-    const userProvidedShortName = short_name;
-    getShortIdValidated(short_name, isGuest ? 5 : 3).then(response => {
-        if (response.available) {
-            res.status(200).json(
-                getSuccessResponse({
-                    ...response,
-                    url: long_url,
+
+    if (core.StringConstants.ME_URL.includes(new URL(long_url).hostname)) {
+        res.status(400).json(
+            getErrorResponse("Our urls are already short."))
+    } else if (long_url.length > 1980) {
+        res.status(400).json(
+            getErrorResponse(`URL Exceeding allowed length by ${long_url.length - 1980} characters.`))
+    } else {
+        getShortIdValidated(isGuest ? undefined : short_name, isGuest ? 5 : 3).then(response => {
+            if (response.available) {
+                db.addLink({
+                    short_name: response.short_name,
+                    long_url,
+                    owner: (isGuest ? "Guest" : "SOME_USER")
+                }).then(() => {
+                    res.status(200).json(
+                        getSuccessResponse({
+                            ...response,
+                            long_url: long_url,
+                        })
+                    )
+                }).catch(error => {
+                    res.status(500).json(
+                        getErrorResponse(error.message)
+                    )
                 })
+
+            } else {
+                res.status(200).json(
+                    getErrorResponse("This short name has already been taken", response))
+            }
+        }).catch(error => {
+            res.status(500).json(
+                getErrorResponse(error.message)
             )
-        } else {
-            res.status(200).json(
-                getErrorResponse("This short name has already been taken", response))
-        }
-    }).catch(error => {
-        getErrorResponse(error.message)
-    })
+        })
+    }
 });
 
 

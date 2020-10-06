@@ -3,6 +3,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');
 const path = require('path');
+
+const core = require('./src/core');
+
 const apiRoute = require('./src/api-router');
 const app = express();
 const port = process.env.PORT;
@@ -16,7 +19,9 @@ app.get(['/', '/login', '/home', '/logout', '/fe/*'], (req, res) => {
 
 app.get('/@:short_name', (req, res) => {
     let short_name = req.params['short_name'];
-    res.redirect(`https://www.google.com/search?q=${short_name}`);
+    core.getShortIdValidated(short_name).then(data=> {
+        res.redirect(data.long_url);
+    })
 });
 
 app.use('/api', apiRoute);

@@ -4,6 +4,7 @@ const getShortNameRow = require('./db').getShortNameRow;
 const StringConstants = {
     ME_URL: 'http://qlinks.in/'
 }
+exports.StringConstants = StringConstants;
 
 function getResponse(obj, success, error) {
     const respObj = {
@@ -85,7 +86,7 @@ exports.parseUserAgent = function (req) {
 
 // Random Ids
 exports.getShortIdValidated = async function (short_name, len = 3, unique = true) {
-    const validShortName = (short_name || short_name.length > 0);
+    const validShortName = (short_name && short_name.length > 0);
     const sanitizedLength = (Number.isInteger(parseInt(len)) && len >= 1) ? (len > 100 ? 100 : len) : 5;
     let maxAttempts = validShortName ? 1 : 50;
     while (maxAttempts-- >= 0) {

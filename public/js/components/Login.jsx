@@ -11,8 +11,8 @@ class Login extends React.Component {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                username: username,
-                password: password
+                username,
+                password
             })
         }).then((response) => response.json()).then((response) => {
             if (response.success) {
@@ -32,12 +32,16 @@ class Login extends React.Component {
 
     guestLogin = (event) => {
         event.preventDefault();
+        const expireAt = new Date();
+        expireAt.setMinutes(expireAt.getMinutes() + 30);
         const guestObj = {
             isGuest: true,
             user: {
                 username: "Guest",
                 name: "Guest",
-            }
+            },
+            expireAt: expireAt,
+            accessToken: "GUEST"
         }
         localStorage.setItem("user", JSON.stringify(guestObj));
         showSuccess('Login successful.', 1000);
@@ -72,7 +76,8 @@ class Login extends React.Component {
                     </div>
                     <div className="right">
                         <a href="#" data-toggle="tooltip" data-placement="top"
-                           title="Login as a Guest user. Limited features only." style={{color: "grey"}} onClick={this.guestLogin}>Login as Guest</a>
+                           title="Login as a Guest user. Limited features only." style={{color: "grey"}}
+                           onClick={this.guestLogin}>Login as Guest</a>
                     </div>
                 </form>
             </div>

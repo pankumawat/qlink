@@ -1,6 +1,45 @@
 class Shortener extends React.Component {
+    state = {
+        shorts: []
+    }
+
     createShortUrl = (event) => {
         event.preventDefault();
+        const shortener_form = event.target;
+        const short_name = shortener_form.elements.namedItem("short_name").value;
+        const long_url = shortener_form.elements.namedItem("long_url").value;
+        const guest = this.props.loggedInUser.isGuest ? true : false;
+
+        fetch('/api/short', {
+            method: 'post',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                short_name,
+                long_url,
+                guest
+            })
+        }).then((response) => response.json()).then((response) => {
+            if (response.success) {
+                showSuccess('Wow.. Link Generated..', 1000);
+                this.state.shorts.push({...response.data, expireAt: Date.now()});
+                this.setState(this.state);
+                shortener_form.elements.namedItem("long_url").value = "";
+            } else {
+                showError(response.error, 3000);
+            }
+        }).catch((error) => {
+            showError(`Something went wrong. details: ${error}`, 3000);
+        });
+    }
+
+    copyToClipboard = (event) => {
+        event.preventDefault();
+        event.target.select();
+        event.target.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        showSuccess(event.target.value + " copied to clipboard.", 3000);
     }
 
     render = () => (
@@ -30,6 +69,34 @@ class Shortener extends React.Component {
                     </div>
                 </div>
             </form>
+
+            <table className="table table-dark shortener">
+                <thead>
+                <tr>
+                    <th scope="col">Short Name</th>
+                    <th scope="col">Short URL</th>
+                    <th scope="col">Expiry</th>
+                </tr>
+                </thead>
+                <tbody>
+                {this.state.shorts.map(row => {
+                    const expireAt = new Date(row.expireAt ? row.expireAt : Date.now());
+                    expireAt.setHours(expireAt.getHours() + 30 * 24);
+
+                    return (
+                        <tr>
+                            <td>{row.short_name}</td>
+                            <td>
+                                <input type="text" size={row.url.length + 2}
+                                       style={{background: "transparent", border: "none", color: "white"}}
+                                       value={row.url} width="100%" onClick={this.copyToClipboard}/>
+                            </td>
+                            <td>{expireAt.toISOString().split('T')[0]}</td>
+                        </tr>
+                    )
+                })}
+                </tbody>
+            </table>
         </div>
     )
 }

@@ -21,6 +21,21 @@ exports.getShortNameRow = (short_name) => {
     });
 }
 
+exports.addLink = (data) => {
+    let insertQuery = 'INSERT INTO ?? (??,??,??,??) VALUES (?,?,?,?)';
+    let query = mysql.format(insertQuery, ["links", "short_name", "long_url", "owner", "status", data.short_name, data.long_url, data.owner, "ACTIVE"]);
+    return new Promise((resolve, reject) => {
+        pool.query(query, (err, response) => {
+            if (err) {
+                reject(err);
+            }
+            // rows added
+            console.dir(response);
+            resolve(response);
+        });
+    });
+}
+
 
 /*
 function addRow(data) {
