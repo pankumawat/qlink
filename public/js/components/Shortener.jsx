@@ -1,6 +1,19 @@
 class Shortener extends React.Component {
+    getPastShorts() {
+        const pastShorts = localStorage.getItem("qlinks_shorts");
+        if (pastShorts) {
+            try {
+                return JSON.parse(pastShorts);
+            } catch (error) {
+                return [];
+            }
+        } else {
+            return [];
+        }
+    }
+
     state = {
-        shorts: []
+        shorts: this.getPastShorts()
     }
 
     createShortUrl = (event) => {
@@ -24,6 +37,7 @@ class Shortener extends React.Component {
             if (response.success) {
                 showSuccess('Wow.. Link Generated..', 1000);
                 this.state.shorts.push({...response.data, expireAt: Date.now()});
+                localStorage.setItem("qlinks_shorts", JSON.stringify(this.state.shorts));
                 this.setState(this.state);
                 shortener_form.elements.namedItem("long_url").value = "";
             } else {
