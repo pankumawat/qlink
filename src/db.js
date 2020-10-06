@@ -30,7 +30,6 @@ exports.addLink = (data) => {
                 reject(err);
             }
             // rows added
-            console.dir(response);
             resolve(response);
         });
     });
