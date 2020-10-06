@@ -6,19 +6,11 @@ const parseUserAgent = core.parseUserAgent;
 // Functions
 const getSuccessResponse = core.getSuccessResponse;
 const getErrorResponse = core.getErrorResponse;
-
-const generateGuestShortIds = core.generateGuestShortIds;
-const generateShortIds = core.generateShortIds;
+const getShortIdValidated = core.getShortIdValidated;
 const getJwtToken = core.getJwtToken;
 
 apiRoute.get('/', (req, res) => {
     res.status(200).json({message: 'Connected!'});
-});
-
-
-apiRoute.get('/unique-ids/:len', (req, res) => {
-    let len = req.params['len'];
-    res.send(generateGuestShortIds(len));
 });
 
 apiRoute.post('/login', (req, res) => {
@@ -52,6 +44,31 @@ apiRoute.post('/login', (req, res) => {
         return res.status(400).json({user: username, pass: password});
     }
 });
+
+apiRoute.post('/short', (req, res) => {
+    let short_name = req.body.short_name;
+    const long_url = req.body.long_url;
+    const isGuest = req.body.guest;
+    const userProvidedShortName = short_name;
+    getShortIdValidated(isGuest ? 5 : 3, short_name).then(response => {
+        if (response.short_name) {
+            res.status(200).json(
+                getSuccessResponse({
+                    short_name: response.short_name,
+                    url: long_url,
+                    link: `@${response.short_name}`,
+                    full_url: `http://qlinks.in/@${response.short_name}`,
+                })
+            )
+        } else {
+            res.status(200).json(
+                getErrorResponse("This short name has already been taken", response.data))
+        }
+    }).catch(error => {
+        getErrorResponse(error.message)
+    })
+});
+
 
 apiRoute.get('/p', (req, res) => {
     return res.send(JSON.stringify(parseUserAgent(req)));

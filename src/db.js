@@ -1,19 +1,28 @@
-/* const mysql = require('mysql');
+const mysql = require('mysql');
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
     port: '3306',
-    user: 'qlinks',
-    password: 'sknils',
+    user: 'root',
+    password: 'Dumb@911',
     database: 'qlinks'
 });
 
-pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-    if (error) throw error;
-    console.log('The solution is: ', results[0].solution);
-});
+exports.getShortNameRow = (short_name) => {
+    let selectQuery = 'SELECT * FROM links WHERE short_name = ?';
+    let query = mysql.format(selectQuery, [short_name]);
+
+    return new Promise((resolve, reject) => {
+        pool.query(query, function (error, results, fields) {
+            if (error) reject(error);
+            if (results) resolve(results);
+            resolve([]);
+        });
+    });
+}
 
 
+/*
 function addRow(data) {
     let insertQuery = 'INSERT INTO ?? (??,??) VALUES (?,?)';
     let query = mysql.format(insertQuery, ["todo", "user", "notes", data.user, data.value]);

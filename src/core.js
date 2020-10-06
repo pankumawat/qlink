@@ -1,5 +1,6 @@
 const token_master = require('./utils/token-master');
 const user_agent_parser = require('ua-parser-js');
+const getShortNameRow = require('./db').getShortNameRow;
 
 function getResponse(obj, success, error) {
     const respObj = {
@@ -80,12 +81,34 @@ exports.parseUserAgent = function (req) {
 }
 
 // Random Ids
-exports.generateGuestShortIds = function (len) {
-    const sanitizedLength = (len && Number.isInteger(parseInt(len)) && len >= 5) ? (len > 100 ? 100 : len) : 5;
-    return generateId(sanitizedLength);
-}
+exports.getShortIdValidated = async function (len = 3, short_name, unique = true) {
+    const validShortName = (short_name || short_name.length > 0);
+    const sanitizedLength = (Number.isInteger(parseInt(len)) && len >= 3) ? (len > 100 ? 100 : len) : 5;
+    let maxAttempts = validShortName ? 1 : 50;
+    while (maxAttempts-- >= 0) {
+        const _short_name = validShortName ? short_name : generateId(sanitizedLength);
+        // TODO check with temporary reservedList
+        const row = await getShortNameRow(_short_name)
+        if (row.length === 0) {
+            return {
+                short_name: _short_name,
+                data: {}
+            };
+        } else {
+            if (maxAttempts === 0) {
+                const rc = {...row[0]};
+                const sanitizedRow = {
+                    short_name: rc.short_name,
+                    long_url: rc.long_url,
+                    status: rc.status,
+                    createdDt: rc.createdDt,
+                    modifiedDt: rc.modifiedDt
+                }
 
-// Random Ids
-exports.generateShortIds = function () {
-    return generateId(3);
+                return {
+                    data: sanitizedRow
+                };
+            }
+        }
+    }
 }

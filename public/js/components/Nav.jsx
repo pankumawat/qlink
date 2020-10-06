@@ -12,6 +12,11 @@ const Nav = (props) => {
                     qlinks
                 </a>
                 <ul className="navbar-nav ml-auto">
+                    <li className="nav-item nav-link">
+                        Welcome {props.loggedInUser.user.username}
+                    </li>
+                </ul>
+                <ul className="navbar-nav ml-auto">
                     <li className="nav-item active">
                         <a className="nav-link" href={VALID_PATHS.HOME} onClick={quiteRedirect}>
                             Home

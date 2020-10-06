@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>qlinks - Quick Links..</title>
+    <title>qlinks - Quick Links</title>
 
     <!-- almighty jquery -->
     <script src="/lib/jquery/jquery-3.5.1.slim.min.js"></script>
@@ -24,6 +24,7 @@
 
     <script type='text/babel' src="/js/components/Login.jsx"></script>
     <script type='text/babel' src="/js/components/Nav.jsx"></script>
+    <script type='text/babel' src="/js/components/Shortener.jsx"></script>
     <script type='text/babel' src="/js/components/Home.jsx"></script>
 
     <script src="/js/index.js"></script>
@@ -62,19 +63,18 @@
         }
 
         render = () => {
-            if (!this.state.loggedInUser) {
+            if (this.state.loggedInUser) {
+                silentUrlChangeTo(VALID_PATHS.HOME);
+                return (
+                    <div className="app center">
+                        <Home logout={this.logout} loggedInUser={this.state.loggedInUser}/>
+                    </div>
+                )
+            } else {
                 silentUrlChangeTo(VALID_PATHS.LOGIN);
                 return (
                     <div className="app box center">
                         <Login loginSuccess={this.loginSuccess}/>
-                    </div>
-                )
-            } else {
-                silentUrlChangeTo(VALID_PATHS.HOME);
-                return (
-                    <div className="app center">
-                        <Home logout={this.logout}/>
-                        <div style={{color: "white"}}>{this.state.loggedInUser.user.username}</div>
                     </div>
                 )
             }
