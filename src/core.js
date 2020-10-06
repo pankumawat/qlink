@@ -1,6 +1,9 @@
 const token_master = require('./utils/token-master');
 const user_agent_parser = require('ua-parser-js');
 const getShortNameRow = require('./db').getShortNameRow;
+const StringConstants = {
+    ME_URL: 'http://qlinks.in/'
+}
 
 function getResponse(obj, success, error) {
     const respObj = {
@@ -81,9 +84,9 @@ exports.parseUserAgent = function (req) {
 }
 
 // Random Ids
-exports.getShortIdValidated = async function (len = 3, short_name, unique = true) {
+exports.getShortIdValidated = async function (short_name, len = 3, unique = true) {
     const validShortName = (short_name || short_name.length > 0);
-    const sanitizedLength = (Number.isInteger(parseInt(len)) && len >= 3) ? (len > 100 ? 100 : len) : 5;
+    const sanitizedLength = (Number.isInteger(parseInt(len)) && len >= 1) ? (len > 100 ? 100 : len) : 5;
     let maxAttempts = validShortName ? 1 : 50;
     while (maxAttempts-- >= 0) {
         const _short_name = validShortName ? short_name : generateId(sanitizedLength);
@@ -92,21 +95,22 @@ exports.getShortIdValidated = async function (len = 3, short_name, unique = true
         if (row.length === 0) {
             return {
                 short_name: _short_name,
-                data: {}
+                link: `/@${_short_name}`,
+                url: `${StringConstants.ME_URL}@${_short_name}`,
+                available: true
             };
         } else {
             if (maxAttempts === 0) {
                 const rc = {...row[0]};
-                const sanitizedRow = {
+                return {
                     short_name: rc.short_name,
+                    link: `/@${_short_name}`,
+                    url: `${StringConstants.ME_URL}@${rc.short_name}`,
                     long_url: rc.long_url,
                     status: rc.status,
                     createdDt: rc.createdDt,
-                    modifiedDt: rc.modifiedDt
-                }
-
-                return {
-                    data: sanitizedRow
+                    modifiedDt: rc.modifiedDt,
+                    available: false
                 };
             }
         }

@@ -45,24 +45,33 @@ apiRoute.post('/login', (req, res) => {
     }
 });
 
+apiRoute.get('/short/:short_name', (req, res) => {
+    const short_name = req.params['short_name'];
+    getShortIdValidated(short_name).then(data => {
+        res.status(200).json(getSuccessResponse(data))
+    }).catch(error => {
+        res.status(500).json(
+            getErrorResponse(error.message)
+        )
+    })
+});
+
 apiRoute.post('/short', (req, res) => {
     let short_name = req.body.short_name;
     const long_url = req.body.long_url;
     const isGuest = req.body.guest;
     const userProvidedShortName = short_name;
-    getShortIdValidated(isGuest ? 5 : 3, short_name).then(response => {
-        if (response.short_name) {
+    getShortIdValidated(short_name, isGuest ? 5 : 3).then(response => {
+        if (response.available) {
             res.status(200).json(
                 getSuccessResponse({
-                    short_name: response.short_name,
+                    ...response,
                     url: long_url,
-                    link: `@${response.short_name}`,
-                    full_url: `http://qlinks.in/@${response.short_name}`,
                 })
             )
         } else {
             res.status(200).json(
-                getErrorResponse("This short name has already been taken", response.data))
+                getErrorResponse("This short name has already been taken", response))
         }
     }).catch(error => {
         getErrorResponse(error.message)
