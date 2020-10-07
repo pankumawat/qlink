@@ -9,11 +9,11 @@ const Nav = (props) => {
             <div className="container">
                 <a className="navbar-brand" href={VALID_PATHS.HOME} onClick={quiteRedirect}>
                     <div className="logo" style={{display: "inline"}}></div>
-                    qlinks
+                    <div style={{display: "inline", color: "#00CC00", "font-size": "20px"}}><strong>www.qlinks.in</strong></div>
                 </a>
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item nav-link">
-                        Welcome {props.loggedInUser.user.username}
+                        Hi {props.loggedInUser.user.username}
                     </li>
                 </ul>
                 <ul className="navbar-nav ml-auto">
