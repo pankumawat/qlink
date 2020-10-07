@@ -58,8 +58,25 @@ apiRoute.get('/short/:short_name', (req, res) => {
 
 apiRoute.post('/short', (req, res) => {
     let short_name = req.body.short_name;
-    const long_url = req.body.long_url;
-    const isGuest = req.body.guest;
+    let long_url = req.body.long_url;
+    const isGuest = true; //req.body.guest; // Currently all are guests since no auth is in place.
+
+    // Sanitize input url
+    try {
+        let final_url = long_url;
+        if (!long_url.startsWith('http')) {
+            if (!long_url.split('.')[0].includes('://')) {
+                const possible_valid_value = `http://${long_url}`;
+                new URL(possible_valid_value);
+                final_url = possible_valid_value;
+            }
+        }
+        new URL(final_url);
+        long_url = final_url;
+    } catch (error) {
+        res.status(400).json(
+            getErrorResponse("Please enter a valid url."))
+    }
 
     if (core.StringConstants.ME_URL.includes(new URL(long_url).hostname)) {
         res.status(400).json(
