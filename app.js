@@ -40,6 +40,7 @@ app.use((req, res) => {
 });
 
 /******************************/
-app.listen(port, () => {
-    console.log(`qlinks running on ${port}!`)
-});
+//app.listen(port, () => {
+//    console.log(`qlinks running on ${port}!`)
+//});
+module.exports = app;
