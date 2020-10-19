@@ -35,7 +35,7 @@ class Login extends React.Component {
         const expireAt = new Date();
         expireAt.setMinutes(expireAt.getMinutes() + 30);
         const guestObj = {
-            isGuest: true,
+            isGuest: false, // TODO turn it to false
             user: {
                 username: "Guest",
                 name: "Guest",

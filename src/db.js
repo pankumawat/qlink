@@ -2,7 +2,7 @@ const mysql = require('mysql');
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
-    port: process.env.SQL_PORT || 3306,
+    port: 1811,
     user: 'root',
     password: 'Dumb@911',
     database: 'qlinks'
