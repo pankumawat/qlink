@@ -59,7 +59,7 @@ apiRoute.get('/short/:short_name', (req, res) => {
 apiRoute.post('/short', (req, res) => {
     let short_name = req.body.short_name;
     let long_url = req.body.long_url;
-    const isGuest = true; //req.body.guest; // Currently all are guests since no auth is in place.
+    const isGuest = req.body.guest; // Currently all are guests since no auth is in place.
 
     // Sanitize input url
     try {
