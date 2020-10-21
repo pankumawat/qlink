@@ -1,4 +1,8 @@
 class Login extends React.Component {
+    constructor(props) {
+        super(props);
+        this.guestLogin();
+    }
     login = (event) => {
         event.preventDefault();
         const loginForm = event.target;
@@ -31,7 +35,7 @@ class Login extends React.Component {
     }
 
     guestLogin = (event) => {
-        event.preventDefault();
+        event && event.preventDefault();
         const expireAt = new Date();
         expireAt.setMinutes(expireAt.getMinutes() + 30);
         const guestObj = {
@@ -44,10 +48,10 @@ class Login extends React.Component {
             accessToken: "GUEST"
         }
         localStorage.setItem("user", JSON.stringify(guestObj));
-        showSuccess('Login successful.', 1000);
+        //showSuccess('Guest Login successful.', 1000);
         setTimeout(() => {
             this.props.loginSuccess(guestObj)
-        }, 1000);
+        }, 0);
     }
 
     render() {

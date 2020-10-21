@@ -2,4 +2,7 @@
 npm install;
 echo "Deploying changes.."
 sudo kill -9 `pgrep node | head -1`
-sudo SQL_PORT=1811 node server.js &
+if [[ $1 == local ]]
+  then npm run local
+  else npm run start &
+fi
