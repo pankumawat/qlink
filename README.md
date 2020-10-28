@@ -1,2 +1,2 @@
 # qlink
-Sample code that will let anyone setup a private server which will include basic API(s), upload, download facilities.
+A Simple service to act as a url shortener, using mysql as db, node as backend and react as ui
