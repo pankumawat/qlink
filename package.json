@@ -18,7 +18,7 @@
     "greenlock-express": "^4.0.3",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
-    "ua-parser-js": "^0.7.22"
+    "ua-parser-js": "^0.7.24"
   },
   "devDependencies": {
     "eslint": "^7.10.0"
